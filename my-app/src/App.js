@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <h1> sanity check</h1>
-      <States />
+      <States name="Harry potter" />
     </div>
   );
 }

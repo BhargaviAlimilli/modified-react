@@ -22,7 +22,7 @@ class StatesInAction extends React.Component{
         return(
             <div>
             <h1>"State In Action</h1>,
-            <h1>{this.state.text}</h1>
+            <h1>{this.state.text}- {this.props.name}</h1>
             </div>
         )
     }
