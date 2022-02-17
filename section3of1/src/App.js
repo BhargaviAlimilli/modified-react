@@ -1,28 +1,39 @@
-import React from 'react'
+import React, {Component} from 'react';
 import './App.css';
-import axios from 'axios'
+import axios from 'axios';
+import Headers from './Headers';
+import Modal from './Modal';
 
-class App extends React.Component {
-
+class App extends Component {
   constructor(){
-    super()
-
-    this.state={
-      temp:'',
+    super();
+    this.state = {
+      temp: "",
       cityName: "",
       weather: "",
       high: "",
       low: "",
-      icon:""
+      icon: "",
+      isRaining: "",
+      showModal: true
     }
-    console.log("contructor running")
-  
   }
 
   componentDidMount(){
+    this.getCityWeather('London');
     var elems = document.querySelectorAll('.modal');
-    var instances = window.M.Modal.init(elems)
+    var instances = window.M.Modal.init(elems);    
+  }
 
+  componentDidUpdate(prevProps,prevState){
+    if(this.state.weather !== prevState.weather){
+      const isRaining = this.state.weather.includes("rain");
+      if(isRaining){
+        this.setState({
+          isRaining: "Rain rain go away!!!"
+        })
+      }
+    }
   }
 
   searchCity = (e)=>{
@@ -32,7 +43,7 @@ class App extends React.Component {
   }
 
   getCityWeather = (city)=>{
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=166b3b85b36db1e454f6fbc2ebd2de09`
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=e312dbeb8840e51f92334498a261ca1d`
     axios.get(url).then((resp)=>{
       this.setState({
         temp: resp.data.main.temp,
@@ -45,33 +56,32 @@ class App extends React.Component {
     })    
   }
 
+  removeModal = ()=>{
+    this.setState({
+      showModal: false
+    })
+  }
+
   render(){
+    const iconUrl = `http://openweathermap.org/img/w/${this.state.icon}.png`
 
-    console.log("render is running")
-    const iconUrl=`http://openweathermap.org/img/wn/${this.state.icon}@2x.png`
+    return (
+      <div className="App">
+      <div className="row">
+        <div className="col s6 offset-s3">
+          <button onClick={this.removeModal} className="btn">Remove from DOM!!</button>
+          <Headers temp={this.state.temp} isRaining={this.state.isRaining} />
+          <a className="waves-effect waves-light btn modal-trigger" href="#modal1">Details</a>
+          <form onSubmit={this.searchCity}>
+            <input type="text" id="city" placeholder="Enter a City Name" />
+          </form>
+          </div>
+        </div>  
 
-  return (
-    <div className="App">
-      <a className="waves-effect waves-light btn modal-trigger" href="#modal1">Check Weather</a>
-      <form onSubmit={this.searchCity}>
-      <input type='text' placeholder='Enter the city name' id='city'></input>
-      </form>
-
-    <div id="modal1" className="modal">
-      <div className="modal-content">
-        <h2>{this.state.cityName}</h2>
-        <h5>{this.state.weather}</h5> <img src={iconUrl} />
-        <p>max temp-{this.state.high}, min temp-{this.state.low}</p>
+        {this.state.showModal ? <Modal iconUrl={iconUrl} weather={this.state.weather} cityName={this.state.cityName} low={this.state.low} high={this.state.high} /> : ""}
       </div>
-  <div className="modal-footer">
-    <a href="#!" className="modal-close waves-effect waves-green btn-flat">Ok</a>
-  </div>
-  </div>
-      <h6>General temperature-{this.state.temp}</h6>
-      
-    </div>
-  );
- }
+    );
+  }
 }
 
 export default App;
