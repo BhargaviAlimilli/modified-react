@@ -9,6 +9,7 @@ import cards from './cards'
 function App() {
   return (
     <div className="App">
+      <h1>sanity check</h1>
         <div className="row">
           <CardSet cards={cards} />
         </div>
