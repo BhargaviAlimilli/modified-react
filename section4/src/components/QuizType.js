@@ -11,7 +11,7 @@ library.add(faDice);
 function QuizType(props){
     return(
         <li className="col-sm-3 text-center">
-            <div className="nav-card">
+            <div className="nav-card" onClick={()=>{props.userChoice(props.type)}}>
                 <FontAwesomeIcon icon={props.icon} size="4x" />
                 <span>{props.type}</span>
             </div>
