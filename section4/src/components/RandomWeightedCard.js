@@ -1,10 +1,19 @@
-import React from "react";
+import React from 'react';
 
-function RandomWeighted(){
+function RandomWeighted(props){
 
+    const question = props.questionData;
     return(
-        <h1>weight</h1>
-    )
-}
-
-export default RandomWeighted
+        <>
+            <div className="card-back">
+                <div>{question.service}</div>
+                <div className="commonality">{question.common}</div>
+            </div>
+            <div className="card-front">
+                <div>{question.cat}</div>
+            </div>
+        </>
+        )
+    }
+    
+export default RandomWeighted;

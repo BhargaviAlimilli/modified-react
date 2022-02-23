@@ -1,32 +1,40 @@
-import React from 'react'
+import React, { Component } from 'react';
 import './App.css';
-import Quizbar from './components/QuizBar';
-import FlashCard from './components/FlashCard';
+import QuizBar from './components/QuizBar';
+import FlashCard from './components/FlashCard'
 
-class App extends React.Component{
-  constructor(){
-    super();
-    this.state={
-      cardStyle:'Random'
-
-    }
+class App extends Component{
+	constructor(){
+		super();
+		this.state = {
+      cardStyle: "Random",
+      ready: false,
+		}
   }
 
-  userChoice=(cardStyle)=>{
+  userChoice = (cardStyle)=>{
     this.setState({
-      cardStyle
+      cardStyle,
+      ready: false
+    })
+  }
+
+  nowReady = ()=>{
+    this.setState({
+      ready: true
     })
   }
 
   render(){
-    console.log(this.state.cardStyle)
-
-    return(
-      <div>
-      <Quizbar  userChoice={this.userChoice}/>
-      <FlashCard />
+    console.log(this.state.cardStyle);
+    return (
+      <div className="App align-items-center d-flex">
+        <div className="container">
+          <QuizBar userChoice={this.userChoice} />
+          <FlashCard cardStyle={this.state.cardStyle} nowReady={this.nowReady} ready={this.state.ready}  />
+        </div>
       </div>
-    )
+    );
   }
 }
 
